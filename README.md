@@ -136,9 +136,6 @@ Actuators (Motor, Pump, Servo)
 
 ---
 
-##  Repository
-
-👉 (Add your GitHub link here)
 
 ---
 
