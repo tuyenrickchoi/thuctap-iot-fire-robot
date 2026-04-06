@@ -24,12 +24,11 @@ void setup() {
   Serial.begin(9600);         
   espSerial.begin(9600);      
 
-  Serial.println("🔥 Arduino Uno sẵn sàng!");
-  Serial.println("🟡 Đang chờ lệnh từ ESP32...");
+  Serial.println(" Arduino Uno sẵn sàng!");
+  Serial.println(" Đang chờ lệnh từ ESP32...");
 }
 
 void loop() {
-  // ✅ Nhận lệnh từ ESP32
   if (espSerial.available()) {
     String command = espSerial.readStringUntil('\n');
     command.trim();
@@ -45,7 +44,6 @@ void loop() {
       Serial.println(">>> Đã TẮT máy bơm & còi (OFF). Bỏ qua cảm biến 3 giây.");
     }
 
-    // ✅ Xử lý lệnh PUMP ON từ ESP32
     else if (command == "ON") {
       digitalWrite(RELAY_PIN, HIGH);   // Bật máy bơm
       analogWrite(BUZZER_PIN, 40);     // Bật còi nhẹ
@@ -56,20 +54,19 @@ void loop() {
     }
   }
 
-  // ⏳ Bỏ qua cảm biến tạm thời (tránh gây nhiễu sau khi vừa bật/tắt thủ công)
+ 
   if (isTemporarilyIgnoringSensor) {
     if (millis() >= ignoreSensorEndTime) {
       isTemporarilyIgnoringSensor = false;
       Serial.println("[TIMER] Thời gian bỏ qua cảm biến đã hết.");
     } else {
-      return; // Vẫn bỏ qua
+      return; 
     }
   }
 
-  // 🔥 Xử lý cảm biến lửa
   int sensorValue = digitalRead(SENSOR_PIN);
 
-  if (sensorValue == LOW) { // Lửa được phát hiện
+  if (sensorValue == LOW) { 
     analogWrite(BUZZER_PIN, 40);
 
     if (shouldBypassSprinklerDelay) {
@@ -82,7 +79,7 @@ void loop() {
       if (!isFire) {
         fireDetectedTime = millis();
         isFire = true;
-        Serial.println("[🔥] Phát hiện lửa → bắt đầu đếm trễ...");
+        Serial.println("Phát hiện lửa → bắt đầu đếm trễ...");
       }
 
       if (millis() - fireDetectedTime >= SPRINKLER_START_DELAY) {
